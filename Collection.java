@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Collection {
 	/**
-	 *读取文本中的单词存入集合中
+	 *读取文本中的单词存入集合
 	 * @param fileName
 	 * @return 文本单词的list集合
 	 * @throws IOException 
