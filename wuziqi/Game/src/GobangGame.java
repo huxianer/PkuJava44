@@ -11,10 +11,7 @@ public class GobangGame {
 	private int posY = 0;
 	// 定义棋盘
 	private Chessboard chessboard;
-	// 定义权重
-	private Chessweight chessweight;
-	//定义计数
-	private Chesscount chesscount;
+
 	/**
 	 * 空构造器
 	 */
@@ -26,13 +23,9 @@ public class GobangGame {
 	 * 
 	 * @param chessboard
 	 *            棋盘类
-	 * @param chessweight
-	 * @param chesscount
 	 */
-	public GobangGame(Chessboard chessboard,Chessweight chessweight,Chesscount chesscount) {
+	public GobangGame(Chessboard chessboard) {
 		this.chessboard = chessboard;
-		this.chesscount=chesscount;
-		this.chessweight=chessweight;
 	}
 
 	/**
@@ -148,33 +141,13 @@ public class GobangGame {
 	 * 计算机随机下棋
 	 */
 	public int[] computerDo() {
-		int i;
-		int j;
-		int posX = 0;
-        int posY = 0;
-		int max = 0;
+		
+		int posX = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
+		int posY = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
 		String[][] board = chessboard.getBoard();
-		int[][] weight = chessweight.getWeight();
-		calNum();
-		calweight();
-//		int posX = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
-//		int posY = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
-//		String[][] board = chessboard.getBoard();
-//		while (board[posX][posY] != "十") {
-//			posX = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
-//			posY = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
-//		}
-		for ( i = 0; i < 22; i++ ){  
-	        for ( j = 0; j < 22; j++ ) {
-	        	
-	        	if (board[i][j] == "十"){
-	        		if (weight[i][j]>max){
-	        			max = weight[i][j];
-	        			posY = j;
-	        			posX = i;	        
-					}
-	        	}
-	        }
+		while (board[posX][posY] != "十") {
+			posX = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
+			posY = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
 		}
 		int[] result = { posX, posY };
 		return result;
@@ -530,71 +503,9 @@ public class GobangGame {
 		return false;
 	}
 
-	public void calweight() {
-		String[][] board = chessboard.getBoard();
-		int[][][] count = chesscount.getCount();
-		int i, j, k;  
-	    int win ;  
-	    for ( i = 0; i < 22; i++ )  
-	        for ( j = 0; j < 22; j++ )   
-	        {  
-	            if ( board[i][j] == "十" ){  
-	            	win=0;
-	                for ( k = 0; k < 4; k++ )  
-	                {  
-	                    if ( count[i][j][k] + count[i][j][k+4] >= 4 )  
-	                        win += 10000;  
-	                    else if ( count[i][j][k] + count[i][j][k+4] == 3 )  
-	                        win += 1000;   
-	                    else if ( count[i][j][k] + count[i][j][k+4] == 2 )  
-	                        win += 100;  
-	                    else if ( count[i][j][k] + count[i][j][k+4] == 1 )  
-	                        win += 10;  
-	                }  
-
-	                chessweight.setWeight(i, j, win);
-
-	            }
-	        }
-	}
-	//统计每个空位周围●连成一线的棋子数目
-	public void calNum() {
-		int i, j, k, t, cnt; 
-		int i1, j1; 
-		int dx[]=new int[]{0, 1, 1, 1, 0, -1, -1, -1};
-		int dy[]= new int[]{-1, -1, 0, 1, 1, 1, 0, -1}; 
-		
-		String[][] board = chessboard.getBoard();
-		
-		for ( i = 0; i < 22; i++ ){  
-		        for ( j = 0; j < 22; j++ ) {  
-		            if ( board[i][j] == "十" ){  //空位  
-		                for ( k = 0; k < 8; k++ ){  // 8个方向
-		                    cnt = 0;
-		                    i1 = i;  
-		                    j1 = j;  
-		                    for ( t = 0; t < 5; t++ ) 
-		                    {  
-		                    	i1 =i1 + dx[k];  
-		                        j1 =j1 + dy[k];  
-		                        if ( i1 > 22 || i1 < 0 || j1 > 22|| j1 < 0 ) 
-		                            break;  
-		                        if( board[i1][j1] == "●" )  
-		                            cnt++;  
-		                        else 
-		                            break;  
-		                    }  
-		                    System.out.println(i+" "+j+" "+k+" "+cnt);
-		                    chesscount.setCount(i, j, k, cnt);
-
-		                }
-		            }
-		        }
-		}
-	}
 	public static void main(String[] args) throws Exception {
-		
-		GobangGame gb = new GobangGame(new Chessboard(),new Chessweight(),new Chesscount());
+
+		GobangGame gb = new GobangGame(new Chessboard());
 		gb.start();
 	}
 }
