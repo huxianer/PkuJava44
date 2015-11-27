@@ -77,7 +77,10 @@ public class GobangGame {
 	public void start() throws Exception {
 		// true为游戏结束
 		boolean isOver = false;
+
 		chessboard.initBoard();
+		chesscount.initcount();
+		chessweight.initWeight();
 		chessboard.printBoard();
 		// 获取键盘的输入
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
